@@ -3,7 +3,7 @@ package enrolment;
 public interface StudentEnrolmentManager {
     public void add();
 
-    public void update();
+    public void update(StudentEnrolment studentEnrol);
 
     public void delete();
 
