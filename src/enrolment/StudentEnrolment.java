@@ -8,5 +8,7 @@ interface StudentEnrolmentManager{
 
 }
 public class StudentEnrolment {
-
+    Student student;
+    Course course;
+    String semester;
 }
