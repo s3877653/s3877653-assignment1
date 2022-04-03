@@ -55,12 +55,15 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         else{
             StudentEnrolment stuEnrol = new StudentEnrolment(student,course,semester);
             enrolList.add(stuEnrol);
+            System.out.println("added enrolment successfully");
         }
     }
 
     @Override
-    public void update(StudentEnrolment studentEnrol) {
-
+    public void update() {
+        System.out.println("Enter student ID");
+        String StuID = sc.nextLine();
+        if(StuID == enrolList.student.getId())
     }
 
     @Override
