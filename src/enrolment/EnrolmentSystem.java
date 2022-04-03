@@ -55,10 +55,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         checkList.add('A');
         checkList.add('B');
         checkList.add('C');
-        //check if the student, course is exist or not and the semester is valid or not
+        //check if the student, course and semester is exist or not and the semester is valid or not
         if (student == null || course == null || semester.length() !=5 || !(checkList.contains(semester.charAt(4)))) {
             System.out.println("in valid input"); }
         else{
+            //if the student, course and semester information is valid create a new StudentEnrolment object then add into the enrolList
             StudentEnrolment stuEnrol = new StudentEnrolment(student,course,semester);
             enrolList.add(stuEnrol);
             System.out.println("added enrolment successfully");
@@ -94,7 +95,31 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     @Override
     public void delete() {
-
+        System.out.println("Enter semester: ");
+        String semester = sc.nextLine();
+        System.out.println("Enter student ID: ");
+        String studentID = sc.nextLine();
+        System.out.println("Enter course ID: ");
+        String courseID = sc.nextLine();
+        Student student = checkStudentID(studentID);
+        Course course = checkCourseID(courseID);
+        //These are the letter that should be included in the semester last character
+        ArrayList<Character> checkList = new ArrayList<>(3);
+        checkList.add('A');
+        checkList.add('B');
+        checkList.add('C');
+        //check if the student, course and semester is exist or not and the semester is valid or not
+        if (student == null || course == null || semester.length() !=5 || !(checkList.contains(semester.charAt(4)))) {
+            System.out.println("in valid input"); }
+        else{
+            //if the student, course and semester information is valid then compare with the list data
+            for(StudentEnrolment stuEnrol : enrolList){
+                if(semester == stuEnrol.semester && studentID == stuEnrol.student.getId() && courseID == stuEnrol.course.getId()){
+                    enrolList.remove(stuEnrol);
+                }
+            }
+            System.out.println("delete enrolment successfully");
+        }
     }
 
     @Override
