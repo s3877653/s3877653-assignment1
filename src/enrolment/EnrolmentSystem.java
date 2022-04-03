@@ -116,9 +116,12 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             for(StudentEnrolment stuEnrol : enrolList){
                 if(semester == stuEnrol.semester && studentID == stuEnrol.student.getId() && courseID == stuEnrol.course.getId()){
                     enrolList.remove(stuEnrol);
+                    System.out.println("delete enrolment successfully");
+                }else{
+                    System.out.println("enrolment don't exist");
                 }
             }
-            System.out.println("delete enrolment successfully");
+
         }
     }
 
