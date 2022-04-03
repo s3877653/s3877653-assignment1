@@ -108,6 +108,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         checkList.add('A');
         checkList.add('B');
         checkList.add('C');
+        //use to check if the enrolment is found in the list
+        boolean enrolCheck = true;
         //check if the student, course and semester is exist or not and the semester is valid or not
         if (student == null || course == null || semester.length() !=5 || !(checkList.contains(semester.charAt(4)))) {
             System.out.println("in valid input"); }
@@ -117,7 +119,9 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 if(semester == stuEnrol.semester && studentID == stuEnrol.student.getId() && courseID == stuEnrol.course.getId()){
                     enrolList.remove(stuEnrol);
                     System.out.println("delete enrolment successfully");
-                }else{
+                    enrolCheck = false;
+                    //if the enrolment has been found then the else if wont be execute
+                }else if (enrolCheck){
                     System.out.println("enrolment don't exist");
                 }
             }
