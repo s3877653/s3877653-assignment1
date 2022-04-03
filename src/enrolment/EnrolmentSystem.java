@@ -41,7 +41,13 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         }
 
     }
-    public void add(String semester, String studentID, String courseID) {
+    public void add() {
+        System.out.println("Enter semester: ");
+        String semester = sc.nextLine();
+        System.out.println("Enter student ID: ");
+        String studentID = sc.nextLine();
+        System.out.println("Enter course ID: ");
+        String courseID = sc.nextLine();
         Student student = checkStudentID(studentID);
         Course course = checkCourseID(courseID);
         //These are the letter that should be included in the semester last character
@@ -61,9 +67,29 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     @Override
     public void update() {
+        //tell user to input student ID
         System.out.println("Enter student ID");
         String StuID = sc.nextLine();
-        if(StuID == enrolList.student.getId())
+        //check if the ID is valid or not
+        Student studentCHeck = checkStudentID(StuID);
+        if(studentCHeck == null){
+            System.out.println("invalid student ID!");
+        }
+        //print all the course that the student are currently enrolled
+        for(StudentEnrolment stuEnrol : enrolList ){
+            if(StuID == stuEnrol.student.getId()){
+                System.out.println(stuEnrol.course.getId() + stuEnrol.course.getName() +  stuEnrol.course.getNumOfCredit());
+            }
+        }
+        System.out.println("Do you want to add or delete the course?");
+        System.out.println("1. Add");
+        System.out.println("2. Delete");
+        int userOption = sc.nextInt();
+        if(userOption == 1){
+            add();
+        }else if(userOption == 2){
+            delete();
+        }
     }
 
     @Override
