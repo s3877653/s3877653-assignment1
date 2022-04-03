@@ -34,11 +34,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             if(stuEnrol.course.getId().equals(id)){
                 course = stuEnrol.course;
                 return course;
-            }
+            }}
             //if there is no course ID in enrolList that match the input
                 System.out.println("Course id not found");
                 return null;
-        }
+
 
     }
     public void add() {
@@ -143,11 +143,38 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     @Override
     public void getOne() {
-
+        System.out.println("Enter semester: ");
+        String semester = sc.nextLine();
+        System.out.println("Enter student ID: ");
+        String studentID = sc.nextLine();
+        System.out.println("Enter course ID: ");
+        String courseID = sc.nextLine();
+        Student student = checkStudentID(studentID);
+        Course course = checkCourseID(courseID);
+        //These are the letter that should be included in the semester last character
+        ArrayList<Character> checkList = new ArrayList<>(3);
+        checkList.add('A');
+        checkList.add('B');
+        checkList.add('C');
+        //check if the student, course and semester is exist or not and the semester is valid or not
+        if (student == null || course == null || semester.length() !=5 || !(checkList.contains(semester.charAt(4)))) {
+            System.out.println("in valid input"); }
+        //use to check if the enrolment is found in the list
+        boolean enrolCheck = true;
+        for(StudentEnrolment stuEnrol : enrolList){
+            if(semester.equals(stuEnrol.semester) && studentID.equals(stuEnrol.student.getId()) && courseID.equals(stuEnrol.course.getId())){
+                System.out.println(stuEnrol);
+                enrolCheck = false;
+            }
+        }
+        //if the enrolment has been found then the if wont be execute
+        if(enrolCheck){
+            System.out.println("Enrolment not found");
+        }
     }
 
     @Override
     public void getAll() {
-
+        System.out.println(enrolList);
     }
 }

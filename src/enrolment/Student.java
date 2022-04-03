@@ -4,7 +4,7 @@ public class Student {
     private String id;
     private String name;
     private String birthDate;
-
+    //because the variable are private so we need getter to access them
     public String getId() {
         return id;
     }
