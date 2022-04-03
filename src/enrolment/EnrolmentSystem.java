@@ -76,19 +76,31 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         if(studentCHeck == null){
             System.out.println("invalid student ID!");
         }
+        //tell user to input semester
+        System.out.println("Enter semester: ");
+        String semester = sc.nextLine();
+        //validate semester
+        //These are the letter that should be included in the semester last character
+        ArrayList<Character> checkList = new ArrayList<>(3);
+        checkList.add('A');
+        checkList.add('B');
+        checkList.add('C');
+        if(semester.length() !=5 || !(checkList.contains(semester.charAt(4)))){
+            System.out.println("invalid semester");
+        }
         //print all the course that the student are currently enrolled
         for(StudentEnrolment stuEnrol : enrolList ){
-            if(StuID == stuEnrol.student.getId()){
+            if(StuID.equals(stuEnrol.student.getId()) && semester.equals(stuEnrol.semester)){
                 System.out.println(stuEnrol.course.getId() + stuEnrol.course.getName() +  stuEnrol.course.getNumOfCredit());
             }
         }
         System.out.println("Do you want to add or delete the course?");
         System.out.println("1. Add");
         System.out.println("2. Delete");
-        int userOption = sc.nextInt();
-        if(userOption == 1){
+        String userOption = sc.nextLine();
+        if(userOption.equals("1")){
             add();
-        }else if(userOption == 2){
+        }else if(userOption.equals("2")){
             delete();
         }
     }
@@ -116,16 +128,16 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         else{
             //if the student, course and semester information is valid then compare with the list data
             for(StudentEnrolment stuEnrol : enrolList){
-                if(semester == stuEnrol.semester && studentID == stuEnrol.student.getId() && courseID == stuEnrol.course.getId()){
+                if(semester.equals(stuEnrol.semester) && studentID.equals(stuEnrol.student.getId()) && courseID.equals(stuEnrol.course.getId())){
                     enrolList.remove(stuEnrol);
                     System.out.println("delete enrolment successfully");
                     enrolCheck = false;
-                    //if the enrolment has been found then the else if wont be execute
-                }else if (enrolCheck){
-                    System.out.println("enrolment don't exist");
+                 }
                 }
+            //if the enrolment has been found then the if wont be execute
+            if (enrolCheck){
+                System.out.println("enrolment don't exist");
             }
-
         }
     }
 
