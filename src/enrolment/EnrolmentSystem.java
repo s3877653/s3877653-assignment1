@@ -1,17 +1,54 @@
 package enrolment;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
-    public static void main(String[] args) {
+    //create scanner and enrolmentList
+     ArrayList<StudentEnrolment> enrolList;
+     Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args){
+        //create scanner
+        Scanner sc = new Scanner(System.in);
+        EnrolmentSystem es = new EnrolmentSystem();
 
 
+        String filePath = null;
+        do{
+            System.out.println("please choose the following file option to create data: ");
+            System.out.println("1.Your file: ");
+            System.out.println("2.Default file: ");
+            String option = sc.nextLine();
+            //process the user input
+            if(option.equals("1")){
+                System.out.println("Enter your file location: ");
+                filePath = sc.nextLine();
+            }else if(option.equals("2")){
+                filePath = "default.csv";
+            }else{
+                System.out.println("invalid input!");
+                continue;
+            }
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(filePath));
+                String line = br.readLine();
+                while (line != null) {
+                    String[] str = line.split(",");
+                    Student student = new Student(str[0],str[1],str[2]);
+                    Course course = new Course(str[3],str[4],str[5]);
+                    StudentEnrolment stuEnrolment = new StudentEnrolment(student,course,str[6]);
+                    es.add();
+                }
+
+
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                filePath = null;
+        }}while(filePath == null);
     }
-
-
-    ArrayList<StudentEnrolment> enrolList = new ArrayList<>();
-    Scanner sc = new Scanner(System.in);
 
     //take student information from the enrolList
     public Student checkStudentID(String id){
