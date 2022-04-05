@@ -56,6 +56,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             System.out.println("4.Get one enrolment");
             System.out.println("5.Get all enrolment");
             System.out.println("6.Print a report");
+            System.out.println("7.exit program: ");
             String option;
             option = sc.nextLine();
             boolean optionCheck = false;
@@ -72,6 +73,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     es.getAll();
                 }else if(option.equals("6")){
                     es.printReport();
+                }else if(option.equals("7")){
+                    System.exit(0);
                 }
                 else{
                     System.out.println("invalid input");
