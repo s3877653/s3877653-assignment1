@@ -18,7 +18,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
         String filePath = null;
         do{
-            System.out.println("please choose the following file option to create data: ");
+            System.out.println("please choose the following file option to create the enrolment list: ");
             System.out.println("1.Your file: ");
             System.out.println("2.Default file: ");
             String option = sc.nextLine();
@@ -33,6 +33,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 continue;
             }
             try {
+                //read vcs file with bufferedReader
                 BufferedReader br = new BufferedReader(new FileReader(filePath));
                 String line = br.readLine();
                 while (line != null) {
@@ -40,14 +41,38 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                     Student student = new Student(str[0],str[1],str[2]);
                     Course course = new Course(str[3],str[4],str[5]);
                     StudentEnrolment stuEnrolment = new StudentEnrolment(student,course,str[6]);
-                    es.add();
+                    es.enrolList.add(stuEnrolment);
                 }
-
-
             } catch (IOException e) {
                 System.out.println(e.getMessage());
                 filePath = null;
         }}while(filePath == null);
+        System.out.println("Welcome to the enrolment system, what do you want to do? ");
+        System.out.println("1.Add enrolment");
+        System.out.println("2.Delete enrolment");
+        System.out.println("3.Update enrolmentList");
+        System.out.println("4.Get one enrolment");
+        System.out.println("5.Get all enrolment");
+        String option;
+        option = sc.nextLine();
+        boolean optionCheck = false;
+        do{
+            if(option.equals("1")){
+                es.add();
+            }else if(option.equals("2")){
+                es.delete();
+            }else if(option.equals("3")){
+                es.update();
+            }else if(option.equals("4")){
+                es.getOne();
+            }else if(option.equals("5")){
+                es.getAll();
+            }else{
+                System.out.println("invalid input");
+                optionCheck = true;
+            }
+        }while(optionCheck);
+
     }
 
     //take student information from the enrolList
