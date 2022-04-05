@@ -26,6 +26,12 @@ public class Course {
         return numOfCredit;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", numOfCredit='" + numOfCredit + '\'' +
+                '}';
+    }
 }

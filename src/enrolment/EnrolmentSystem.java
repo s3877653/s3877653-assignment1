@@ -3,6 +3,7 @@ package enrolment;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class EnrolmentSystem implements StudentEnrolmentManager {
@@ -35,8 +36,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             try {
                 //read vcs file with bufferedReader
                 BufferedReader br = new BufferedReader(new FileReader(filePath));
-                String line = br.readLine();
-                while (line != null) {
+                String line;
+                while ((line= br.readLine()) != null) {
                     String[] str = line.split(",");
                     Student student = new Student(str[0],str[1],str[2]);
                     Course course = new Course(str[3],str[4],str[5]);
@@ -47,32 +48,42 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.println(e.getMessage());
                 filePath = null;
         }}while(filePath == null);
-        System.out.println("Welcome to the enrolment system, what do you want to do? ");
-        System.out.println("1.Add enrolment");
-        System.out.println("2.Delete enrolment");
-        System.out.println("3.Update enrolmentList");
-        System.out.println("4.Get one enrolment");
-        System.out.println("5.Get all enrolment");
-        String option;
-        option = sc.nextLine();
-        boolean optionCheck = false;
-        do{
-            if(option.equals("1")){
-                es.add();
-            }else if(option.equals("2")){
-                es.delete();
-            }else if(option.equals("3")){
-                es.update();
-            }else if(option.equals("4")){
-                es.getOne();
-            }else if(option.equals("5")){
-                es.getAll();
-            }else{
-                System.out.println("invalid input");
-                optionCheck = true;
+        while(true){
+            System.out.println("Welcome to the enrolment system, what do you want to do? ");
+            System.out.println("1.Add enrolment");
+            System.out.println("2.Delete enrolment");
+            System.out.println("3.Update enrolmentList");
+            System.out.println("4.Get one enrolment");
+            System.out.println("5.Get all enrolment");
+            System.out.println("6.Print a report");
+            String option;
+            option = sc.nextLine();
+            boolean optionCheck = false;
+            do{
+                if(option.equals("1")){
+                    es.add();
+                }else if(option.equals("2")){
+                    es.delete();
+                }else if(option.equals("3")){
+                    es.update();
+                }else if(option.equals("4")){
+                    es.getOne();
+                }else if(option.equals("5")){
+                    es.getAll();
+                }else if(option.equals("6")){
+                    es.printReport();
+                }
+                else{
+                    System.out.println("invalid input");
+                    optionCheck = true;
+                }
+            }while(optionCheck);
             }
-        }while(optionCheck);
 
+    }
+
+    public EnrolmentSystem() {
+        enrolList = new ArrayList<>();
     }
 
     //take student information from the enrolList
@@ -225,7 +236,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         boolean enrolCheck = true;
         for(StudentEnrolment stuEnrol : enrolList){
             if(semester.equals(stuEnrol.semester) && studentID.equals(stuEnrol.student.getId()) && courseID.equals(stuEnrol.course.getId())){
-                System.out.println(stuEnrol);
+                System.out.println(stuEnrol.toString());
                 enrolCheck = false;
             }
         }
@@ -237,6 +248,104 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
     @Override
     public void getAll() {
-        System.out.println(enrolList);
+        for(StudentEnrolment enrolSys : enrolList){
+        System.out.println(enrolSys);}
+    }
+
+    public void printReport() {
+        int optionCheck = 0;
+        String option = null;
+        List<String> reportList = new ArrayList<>();
+        do {
+            if (optionCheck != 0) System.out.println("Input 1,2 or 3!");
+            System.out.println("Please choose the report option: ");
+            System.out.println("1.Print all course for 1 student in one semester");
+            System.out.println("2.Print all student of one course in one semester");
+            System.out.println("3.Print all courses offered in 1 semester");
+            option = sc.nextLine();
+            optionCheck++;
+        } while (!option.equals("1") && !option.equals("2") && !option.equals("3"));
+
+
+        if (option.equals("1")) {
+
+            do {
+                System.out.println("Enter semester: ");
+                String semester = sc.nextLine();
+                System.out.println("Enter student ID: ");
+                String studentID = sc.nextLine();
+                for (StudentEnrolment studentEnrol : enrolList) {
+                    if (semester.equals(studentEnrol.semester) && studentID.equals(studentEnrol.student.getId())) {
+                        String course = studentEnrol.course.getId() + "," + studentEnrol.course.getName() + "," + studentEnrol.course.getNumOfCredit();
+                        System.out.println(studentEnrol.course.toString());
+                        reportList.add(course);
+                    }
+                }
+                if (reportList.size() == 0)
+                    System.out.println("invalid input or student don't have course in this semester");
+            } while (reportList.size() == 0);
+
+
+        } else if (option.equals("2")) {
+
+            do {
+                System.out.println("Enter course ID: ");
+                String courseID = sc.nextLine();
+                System.out.println("Enter semester: ");
+                String semester = sc.nextLine();
+                for (StudentEnrolment studentEnrol : enrolList) {
+                    if (courseID.equals(studentEnrol.course.getId()) && semester.equals(studentEnrol.semester)) {
+                        String student = studentEnrol.student.getId() + "," + studentEnrol.student.getName() + "," + studentEnrol.student.getBirthDate();
+                        System.out.println(studentEnrol.student.toString());
+                        reportList.add(student);
+                    }
+                }
+                if (reportList.size() == 0) System.out.println("invalid input or course don't exist");
+
+            } while (reportList.size() == 0);
+
+
+        } else if (option.equals("3")) {
+
+            do {
+                System.out.println("Enter semester: ");
+                String semester = sc.nextLine();
+                for (StudentEnrolment studentEnrol : enrolList) {
+                    if (semester.equals(studentEnrol.semester)) {
+                        System.out.println(studentEnrol.course.toString());
+                        String course = studentEnrol.course.getId() + "," + studentEnrol.course.getName() + "," + studentEnrol.course.getNumOfCredit();
+                        reportList.add(course);
+                    }
+                }
+                if (reportList.size() == 0) System.out.println("invalid input or semester don't exist");
+            } while (reportList.size() == 0);
+        }
+        String fileOption;
+        int fileOptionCheck = 0;
+        do {
+            if (fileOptionCheck != 0) System.out.println("invalid input");
+            System.out.println("Do you want to save to csv file");
+            System.out.println("1.Yes");
+            System.out.println("2.No");
+            fileOption = sc.nextLine();
+            fileOptionCheck++;
+        } while (!fileOption.equals("1") && !fileOption.equals("2"));
+        if (fileOption.equals("1")) {
+            System.out.println("enter your file name: ");
+            String fileName = sc.nextLine();
+            File reportFile = new File(fileName + ".csv");
+            try {
+                FileWriter reportFileWriter = new FileWriter(reportFile);
+                for (String str : reportList) {
+                    System.out.println(str);
+                    reportFileWriter.write(str + "\n");
+                }reportFileWriter.close();
+            } catch (IOException e) {
+                e.getMessage();
+            }
+
+        } else  {
+            System.out.println("program finished");
+        }
     }
 }
