@@ -16,39 +16,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         Scanner sc = new Scanner(System.in);
         EnrolmentSystem es = new EnrolmentSystem();
 
-        //store the file name that user input
-        String filePath = null;
-        // use the do while loop to prompt user to input again if the previous in put is invalid
-        do{
-            System.out.println("please choose the following file option to create the enrolment list: ");
-            System.out.println("1.Your file: ");
-            System.out.println("2.Default file: ");
-            String option = sc.nextLine();
-            //process the user input
-            if(option.equals("1")){
-                System.out.println("Enter your file location: ");
-                filePath = sc.nextLine();
-            }else if(option.equals("2")){
-                filePath = "default.csv";
-            }else{
-                System.out.println("invalid input!");
-                continue;
-            }
-            try {
-                //read vcs file with bufferedReader
-                BufferedReader br = new BufferedReader(new FileReader(filePath));
-                String line;
-                while ((line= br.readLine()) != null) {
-                    String[] str = line.split(",");
-                    Student student = new Student(str[0],str[1],str[2]);
-                    Course course = new Course(str[3],str[4],str[5]);
-                    StudentEnrolment stuEnrolment = new StudentEnrolment(student,course,str[6]);
-                    es.enrolList.add(stuEnrolment);
-                }
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                filePath = null;
-        }}while(filePath == null);
+        es.filePopulator();
         // menu selection
         while(true){
             System.out.println("Welcome to the enrolment system, what do you want to do? ");
@@ -167,7 +135,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         if(semester.length() !=5 || !(checkList.contains(semester.charAt(4)))){
             System.out.println("invalid semester");
         }
-        //print all the course that the student are currently enrolled
+        //print all the course that the student are currently enrolled in the semester that is input
         for(StudentEnrolment stuEnrol : enrolList ){
             if(StuID.equals(stuEnrol.student.getId()) && semester.equals(stuEnrol.semester)){
                 System.out.println(stuEnrol.course.getId() + stuEnrol.course.getName() +  stuEnrol.course.getNumOfCredit());
@@ -258,7 +226,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         System.out.println(enrolSys);}
     }
     //this method is used to print report
-    public void printReport() {
+    public void printReport()
+    {
         int optionCheck = 0;
         String option = null;
         List<String> reportList = new ArrayList<>();
@@ -360,4 +329,43 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             System.out.println("program finished");
         }
     }
+
+    public void filePopulator(){
+        //store the file name that user input
+        String filePath = null;
+        // use the do while loop to prompt user to input again if the previous in put is invalid
+        do{
+            System.out.println("please choose the following file option to create the enrolment list: ");
+            System.out.println("1.Your file: ");
+            System.out.println("2.Default file: ");
+            String option = sc.nextLine();
+            //process the user input
+            if(option.equals("1")){
+                System.out.println("Enter your file location: ");
+                filePath = sc.nextLine();
+            }else if(option.equals("2")){
+                filePath = "default.csv";
+            }else{
+                System.out.println("invalid input!");
+                continue;
+            }
+            try {
+                //read vcs file with bufferedReader
+                BufferedReader br = new BufferedReader(new FileReader(filePath));
+                String line;
+                while ((line= br.readLine()) != null) {
+                    String[] str = line.split(",");
+                    Student student = new Student(str[0],str[1],str[2]);
+                    Course course = new Course(str[3],str[4],str[5]);
+                    StudentEnrolment stuEnrolment = new StudentEnrolment(student,course,str[6]);
+                    enrolList.add(stuEnrolment);
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+                filePath = null;
+            }}while(filePath == null);
+    }
+
 }
+
+
