@@ -2,7 +2,7 @@ package enrolment;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,14 +10,15 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
     //create scanner and enrolmentList
      ArrayList<StudentEnrolment> enrolList;
      Scanner sc = new Scanner(System.in);
-
+    //main method
     public static void main(String[] args){
         //create scanner
         Scanner sc = new Scanner(System.in);
         EnrolmentSystem es = new EnrolmentSystem();
 
-
+        //store the file name that user input
         String filePath = null;
+        // use the do while loop to prompt user to input again if the previous in put is invalid
         do{
             System.out.println("please choose the following file option to create the enrolment list: ");
             System.out.println("1.Your file: ");
@@ -48,6 +49,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                 System.out.println(e.getMessage());
                 filePath = null;
         }}while(filePath == null);
+        // menu selection
         while(true){
             System.out.println("Welcome to the enrolment system, what do you want to do? ");
             System.out.println("1.Add enrolment");
@@ -89,7 +91,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         enrolList = new ArrayList<>();
     }
 
-    //take student information from the enrolList
+    //check if the user student ID is valid or not
     public Student checkStudentID(String id){
         Student student;
         for(StudentEnrolment stuEnrol: enrolList){
@@ -103,7 +105,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         return null;
     }
 
-    //take course information from the enrolList
+    //check course information
     public Course checkCourseID(String id){
         Course course;
         for(StudentEnrolment stuEnrol: enrolList){
@@ -117,6 +119,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
 
 
     }
+    // add method
     public void add() {
         System.out.println("Enter semester: ");
         String semester = sc.nextLine();
@@ -180,7 +183,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             delete();
         }
     }
-
+    // delete method
     @Override
     public void delete() {
         System.out.println("Enter semester: ");
@@ -216,7 +219,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             }
         }
     }
-
+    //getOne method
     @Override
     public void getOne() {
         System.out.println("Enter semester: ");
@@ -248,17 +251,18 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             System.out.println("Enrolment not found");
         }
     }
-
+    //getAll method
     @Override
     public void getAll() {
         for(StudentEnrolment enrolSys : enrolList){
         System.out.println(enrolSys);}
     }
-
+    //this method is used to print report
     public void printReport() {
         int optionCheck = 0;
         String option = null;
         List<String> reportList = new ArrayList<>();
+        //if the user input is invalid, run the input selection again
         do {
             if (optionCheck != 0) System.out.println("Input 1,2 or 3!");
             System.out.println("Please choose the report option: ");
@@ -269,14 +273,14 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             optionCheck++;
         } while (!option.equals("1") && !option.equals("2") && !option.equals("3"));
 
-
+        //Print all course for 1 student in one semester
         if (option.equals("1")) {
-
             do {
                 System.out.println("Enter semester: ");
                 String semester = sc.nextLine();
                 System.out.println("Enter student ID: ");
                 String studentID = sc.nextLine();
+                //loop through the enrolment list to select the correct data then print on the screen and add to the report list
                 for (StudentEnrolment studentEnrol : enrolList) {
                     if (semester.equals(studentEnrol.semester) && studentID.equals(studentEnrol.student.getId())) {
                         String course = studentEnrol.course.getId() + "," + studentEnrol.course.getName() + "," + studentEnrol.course.getNumOfCredit();
@@ -284,6 +288,7 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
                         reportList.add(course);
                     }
                 }
+                //run the input prompt again if the user input is invalid
                 if (reportList.size() == 0)
                     System.out.println("invalid input or student don't have course in this semester");
             } while (reportList.size() == 0);
@@ -327,6 +332,8 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
         int fileOptionCheck = 0;
         do {
             if (fileOptionCheck != 0) System.out.println("invalid input");
+
+            //ask user if they want to save report to csv file or not
             System.out.println("Do you want to save to csv file");
             System.out.println("1.Yes");
             System.out.println("2.No");
@@ -334,9 +341,11 @@ public class EnrolmentSystem implements StudentEnrolmentManager {
             fileOptionCheck++;
         } while (!fileOption.equals("1") && !fileOption.equals("2"));
         if (fileOption.equals("1")) {
+            //get file name from user
             System.out.println("enter your file name: ");
             String fileName = sc.nextLine();
             File reportFile = new File(fileName + ".csv");
+            //create new file using the name that user input then write data taken from report list on the new file
             try {
                 FileWriter reportFileWriter = new FileWriter(reportFile);
                 for (String str : reportList) {
